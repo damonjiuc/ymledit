@@ -1,0 +1,13 @@
+# Виртуалка
+/ven
+
+# Git
+/.idea
+
+# Конфиг
+/config.py
+
+# XML
+/edited.xml
+/input.xml
+/main.xml
