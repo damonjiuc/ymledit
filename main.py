@@ -410,11 +410,7 @@ def write_dict(dict_w_data, path):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print(url)
 
-
-
-if 1 == 2:
     # риалдор
     get_xml(url_rd)
 

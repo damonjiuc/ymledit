@@ -8,6 +8,4 @@
 /config.py
 
 # XML
-/edited.xml
-/input.xml
-/main.xml
+*.xml
