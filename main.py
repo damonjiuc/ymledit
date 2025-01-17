@@ -142,6 +142,16 @@ def filter_doors_colors(dict_w_data):
     dict_w_data['yml_catalog']['shop']['offers']['offer'] = doors_w_vars
 
 
+def filter_sale(dict_w_data):
+    doors = []
+    for offer in dict_w_data['yml_catalog']['shop']['offers']['offer']:
+        for param in offer['param']:
+            if param['@name'] == 'Распродажа 2025':
+                doors.append(offer)
+    print(f'Дверей осталось после фильтрации: {len(doors)}')
+    dict_w_data['yml_catalog']['shop']['offers']['offer'] = doors
+
+
 def edit_offers(dict_w_data, categories):
     for offer in dict_w_data['yml_catalog']['shop']['offers']['offer']:
         description = []
@@ -411,6 +421,39 @@ def write_dict(dict_w_data, path):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
 
+
+    # профильдорс
+
+    data = get_dict('pd.xml')
+
+    clear_currencies(data)
+
+    cur_categories = get_categories(data)
+
+    data, cat_from_child, cat_from_parent, parent_cat = clear_categories(data)
+
+    cat_to_go = ['1', '2']
+    cat_to_erase = ['5', '6', '38', '170', '314']
+
+    for key, value in cat_from_parent.items():
+        if key == '1' or key == '2':
+            cat_to_go.extend(value)
+        else:
+            cat_to_erase.append(key)
+            cat_to_erase.extend(value)
+
+    clear_doors_categories(data)
+
+    phone = data['yml_catalog']['shop'].pop('phone')
+    print(phone)
+
+    filter_sale(data)
+
+    edit_offers_doors(data, cur_categories)
+
+    write_dict(data, output_file)
+    write_xml(output_file, ftp_pd)
+
     # риалдор
     get_xml(url_rd)
 
@@ -561,39 +604,6 @@ if __name__ == '__main__':
 
         write_dict(data, output_file)
         write_xml(output_file, ftp_spbl)
-
-
-        # профильдорс
-
-        data = get_dict('pd.xml')
-
-        clear_currencies(data)
-
-        cur_categories = get_categories(data)
-
-        # data, cat_from_child, cat_from_parent, parent_cat = clear_categories(data)
-
-        # cat_to_go = ['1', '2']
-        # cat_to_erase = ['5', '6', '38', '170', '314']
-        #
-        # for key, value in cat_from_parent.items():
-        #     if key == '1' or key == '2':
-        #         cat_to_go.extend(value)
-        #     else:
-        #         cat_to_erase.append(key)
-        #         cat_to_erase.extend(value)
-        #
-        # clear_doors_categories(data)
-
-        phone = data['yml_catalog']['shop'].pop('phone')
-        print(phone)
-
-        filter_doors_colors(data)
-
-        edit_offers_doors(data, cur_categories)
-
-        write_dict(data, output_file)
-        write_xml(output_file, ftp_pd)
 
 
     # ленплитка
